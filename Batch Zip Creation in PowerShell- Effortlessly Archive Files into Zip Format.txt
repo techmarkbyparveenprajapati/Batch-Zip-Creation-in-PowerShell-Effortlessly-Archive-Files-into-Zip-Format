@@ -1,0 +1,18 @@
+# Path to the folder containing the files you want to zip
+$sourceFolder = "C:\Path\To\Source"
+
+# Get a list of files in the source folder
+$fileList = Get-ChildItem -Path $sourceFolder
+
+# Destination folder where the zip files will be created
+$destinationFolder = "C:\Path\To\Destination"
+
+# Load the .NET assembly for System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+# Loop through each file and create a zip file
+foreach ($file in $fileList) {
+    $zipFileName = Join-Path -Path $destinationFolder -ChildPath ($file.BaseName + ".zip")
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($file.FullName, $zipFileName)
+    Write-Host "Created $zipFileName"
+}
